@@ -20,11 +20,12 @@
 #include "../include/os_headers.hh"
 
 int main(int argc, char** argv) {
-    std::cout
-    << "tractorlink  Copyright (C) 2023  Gavin Mitchell\n"
-    << "This program comes with ABSOLUTELY NO WARRANTY\n"
-    << "This is free software, and you are welcome to redistribute it\n"
-    << "under certain conditions.\n\n" << std::flush;
+    std::cout <<
+    "tractorlink  Copyright (c) 2023  Gavin Mitchell\n" <<
+    "This program comes with ABSOLUTELY NO WARRANTY.\n" <<
+    "This is free software, and you are welcome to redistribute it\n" <<
+    "under certain conditions.\n\n" <<
+    std::flush;
     
     return 0;
 }
