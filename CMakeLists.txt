@@ -18,8 +18,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(tractorlink CXX)
 
-set(CMAKE_GENERATOR "MSYS Makefiles")
-set(CMAKE_MAKE_PROGRAM make)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 23)
 
@@ -34,7 +32,7 @@ endif()
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/*.cpp)
-file(GLOB_RECURSE INC_FILES ${INC_DIR}/*.h)
+file(GLOB_RECURSE SRC_FILES ${SRC_DIR}/*.cc)
+file(GLOB_RECURSE INC_FILES ${INC_DIR}/*.hh)
 
 add_executable(${PROJECT_NAME} ${SRC_FILES} ${INC_FILES})
