@@ -15,37 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.27)
+set(CURSES_NEED_NCURSES TRUE)
+set(CURSES_NEED_WIDE TRUE)
+find_package(Curses REQUIRED)
 
-project(tractorlink CXX)
+add_library(os STATIC os.cc)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Werror")
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -DDEBUG")
-endif()
-
-if (WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINCOMPAT")
-elseif (UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUNIXCOMPAT")
-endif()
-
-include_directories(include)
-add_subdirectory(src)
-
-add_executable(tractorlink
-  main.cc
-)
-
-target_link_libraries(tractorlink
-  terminal
-  os
-)
-
-add_custom_command(TARGET tractorlink POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/increment_build.cmake
-)
+add_library(terminal STATIC terminal.cc)
+target_link_libraries(terminal os)
+target_link_libraries(terminal ${CURSES_LIBRARIES})
+set_source_files_properties(terminal.cc PROPERTIES COMPILE_FLAGS ${CURSES_CFLAGS})

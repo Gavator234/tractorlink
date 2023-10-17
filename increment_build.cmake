@@ -15,37 +15,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.27)
+set(HEADER_FILE ${CMAKE_CURRENT_SOURCE_DIR}/include/buildnum.hh)
+set(CACHE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/buildnumcache.txt)
 
-project(tractorlink CXX)
-
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Werror")
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -DDEBUG")
+if(EXISTS ${CACHE_FILE})
+  file(READ ${CACHE_FILE} BUILDNUM)
+  math(EXPR BUILDNUM "${BUILDNUM} + 1")
+else()
+  set(BUILDNUM "1")
 endif()
 
-if (WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINCOMPAT")
-elseif (UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUNIXCOMPAT")
-endif()
+file(WRITE ${CACHE_FILE} "${BUILDNUM}")
 
-include_directories(include)
-add_subdirectory(src)
-
-add_executable(tractorlink
-  main.cc
-)
-
-target_link_libraries(tractorlink
-  terminal
-  os
-)
-
-add_custom_command(TARGET tractorlink POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/increment_build.cmake
-)
+file(WRITE ${HEADER_FILE} "
+  #ifndef BUILDNUM
+  #define BUILDNUM \"${BUILDNUM}\"
+  #endif
+")
