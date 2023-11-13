@@ -38,19 +38,24 @@ int main(int argc, char** argv)
         char input;
         std::string inputLine;
         terminal::window TerminalWindow({20, 10}, {10, 5});
-        TerminalWindow.buffer << "READY.\n\n";
+        TerminalWindow.buffer << "READY.\n\n? ";
 
-        while (inputLine != "exit") {
+        while (inputLine != "exit\n") {
+            if (input == '\n') {
+                inputLine.clear();
+                TerminalWindow.buffer << "? ";
+            }
             TerminalWindow.render();
 
             input = terminal::get_char();
             TerminalWindow.buffer << input;
 
-            if (input == '\n')
-                inputLine.clear();
-            else
-                inputLine += input;
+            inputLine += input;
         }
+
+        int endCursorRow = TerminalWindow.winsize.y + TerminalWindow.winpos.y + 1;
+
+        terminal::set_cursor_pos(0, endCursorRow);
 
         return 0;
     }
