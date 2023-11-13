@@ -89,7 +89,7 @@ namespace os
     char get_char()
     {
         //Todo: This.
-        throw std::excetpion;
+        throw std::exception;
     }
 }
 #endif
