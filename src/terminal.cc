@@ -108,14 +108,10 @@ void terminal::window::render()
             continue;
         }
 
-        //translate the position in the window to a position in the terminal
-        int xpos = winpos.x + cursor.x;
-        int ypos = winpos.y + cursor.y;
-
         //move the cursor to the position and print the character
-        cursor.x++;
-        set_cursor_pos(xpos, ypos);
+        set_wcursor_pos();
         std::cout << c;
+        cursor.x++;
     }
 
     std::cout << std::flush;
@@ -140,6 +136,14 @@ void terminal::window::set_wcursor_pos(int xin, int yin)
     cursor.x = xin;
     cursor.y = yin;
 
+    int xpos = winpos.x + cursor.x;
+    int ypos = winpos.y + cursor.y;
+
+    set_cursor_pos(xpos, ypos);
+}
+
+void terminal::window::set_wcursor_pos()
+{
     int xpos = winpos.x + cursor.x;
     int ypos = winpos.y + cursor.y;
 

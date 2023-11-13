@@ -41,6 +41,7 @@ namespace terminal
     window(ullVector2 wsize, ullVector2 wpos);
     void win_clear();
     void set_wcursor_pos(int xin, int yin);
+    void set_wcursor_pos();
     void render();
   };
 }
