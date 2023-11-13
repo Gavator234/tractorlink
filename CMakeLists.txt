@@ -17,7 +17,10 @@
 
 cmake_minimum_required(VERSION 3.27)
 
-project(tractorlink CXX)
+project(tractorlink
+  LANGUAGES CXX
+  VERSION 0.1.0  
+)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -33,7 +36,7 @@ elseif (UNIX)
   add_compile_definitions(UNIXCOMPAT)
 endif()
 
-include_directories(include)
+include_directories(include build)
 add_subdirectory(src)
 
 # terminal.cc settings
@@ -41,10 +44,6 @@ target_link_libraries(terminal os)
 target_link_libraries(terminal ${CURSES_LIBRARIES})
 
 # tractorlink settings
+add_compile_definitions(PROJECT_VERSION=${tractorlink_VERSION_MAJOR}.${tractorlink_VERSION_MINOR})
 add_executable(tractorlink main.cc)
 target_link_libraries(tractorlink terminal os)
-
-# make sure the build number is incremented before building
-add_custom_command(TARGET tractorlink PRE_BUILD
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/increment_build.cmake
-)

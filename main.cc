@@ -20,7 +20,6 @@
 #include <string>
 
 #include "terminal.hh"
-#include "buildnum.hh"
 
 int main(int argc, char** argv) {
     if (argc == 1) {
@@ -89,7 +88,7 @@ int main(int argc, char** argv) {
 
         if (arg1 == "--version" || arg1 == "-v") {
             std::cout << std::endl <<
-            "tractorlink 0.1 build " << BUILDNUM << "\n" <<
+            "tractorlink " << PROJECT_VERSION << "\n" <<
             "Made with love <3\n\n" <<
             std::flush;
             return 0;
