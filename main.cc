@@ -37,7 +37,7 @@ int main(int argc, char** argv)
 
         char input;
         std::string inputLine;
-        terminal::window TerminalWindow({10, 20}, {5, 10});
+        terminal::window TerminalWindow({20, 10}, {10, 5});
         TerminalWindow.buffer << "READY.\n\n";
 
         while (inputLine != "exit") {
