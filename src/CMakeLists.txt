@@ -15,13 +15,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-set(CURSES_NEED_NCURSES TRUE)
-set(CURSES_NEED_WIDE TRUE)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
-
 add_library(os STATIC os.cc)
-
 add_library(terminal STATIC terminal.cc)
-target_link_libraries(terminal os)
-target_link_libraries(terminal ${CURSES_LIBRARIES})

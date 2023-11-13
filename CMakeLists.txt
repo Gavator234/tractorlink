@@ -22,30 +22,29 @@ project(tractorlink CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -Werror")
-
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Wextra -DDEBUG")
-endif()
+set(CURSES_NEED_NCURSES TRUE)
+set(CURSES_NEED_WIDE TRUE)
+find_package(Curses REQUIRED)
+include_directories(${CURSES_INCLUDE_DIR})
 
 if (WIN32)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DWINCOMPAT")
+  add_compile_definitions(WINCOMPAT)
 elseif (UNIX)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DUNIXCOMPAT")
+  add_compile_definitions(UNIXCOMPAT)
 endif()
 
 include_directories(include)
 add_subdirectory(src)
 
-add_executable(tractorlink
-  main.cc
-)
+# terminal.cc settings
+target_link_libraries(terminal os)
+target_link_libraries(terminal ${CURSES_LIBRARIES})
 
-target_link_libraries(tractorlink
-  terminal
-  os
-)
+# tractorlink settings
+add_executable(tractorlink main.cc)
+target_link_libraries(tractorlink terminal os)
 
-add_custom_command(TARGET tractorlink POST_BUILD
+# make sure the build number is incremented before building
+add_custom_command(TARGET tractorlink PRE_BUILD
   COMMAND ${CMAKE_COMMAND} -P ${CMAKE_SOURCE_DIR}/increment_build.cmake
 )
