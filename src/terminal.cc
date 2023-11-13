@@ -17,7 +17,7 @@
 */
 
 #include <iostream>
-#include <ncurses/ncurses.h>
+#include <ncurses.h>
 
 #include "terminal.hh"
 #include "os.hh"
