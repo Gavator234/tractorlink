@@ -16,12 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef TYPES_H
-#define TYPES_H 1
+#pragma once
 
-struct Vector2ui {
+struct ullVector2
+{
   unsigned int x;
   unsigned int y;
 };
-
-#endif

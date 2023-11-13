@@ -16,32 +16,31 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef TERMINAL_H
-#define TERMINAL_H 1
+#pragma once
 
 #include <sstream>
 #include "common.hh"
 #include "os.hh"
 
-namespace terminal {
+namespace terminal
+{
   void clear();
   void set_cursor_pos(int x, int y);
   void set_cursor_visibility(bool visible);
   void clear_line();
   char get_char();
 
-  struct window {
-    Vector2ui termsize = os::gettermsize();
-    Vector2ui winsize;
-    Vector2ui winpos;
-    Vector2ui cursor = {0, 0};
+  struct window
+  {
+    ullVector2 termsize = os::gettermsize();
+    ullVector2 winsize;
+    ullVector2 winpos;
+    ullVector2 cursor = {0, 0};
 
     std::stringstream buffer;
-    window(Vector2ui wsize, Vector2ui wpos);
+    window(ullVector2 wsize, ullVector2 wpos);
     void win_clear();
     void set_wcursor_pos(int xin, int yin);
     void render();
   };
 }
-
-#endif

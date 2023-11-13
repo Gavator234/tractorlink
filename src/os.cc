@@ -25,15 +25,18 @@
 #include <unistd.h>
 #include <sys/ioctl.h>
 
-namespace os {
-    void timer(unsigned long long ms) {
+namespace os
+{
+    void timer(unsigned long long ms)
+    {
         usleep(ms * 1000);
     }
 
-    Vector2ui gettermsize() {
+    ullVector2 gettermsize()
+    {
         struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-        return Vector2ui{w.ws_row, w.ws_col};
+        return ullVector2{w.ws_row, w.ws_col};
     }
 }
 #endif
@@ -41,15 +44,18 @@ namespace os {
 #ifdef WINCOMPAT
 #include <windows.h>
 
-namespace os {
-    void timer(unsigned long long ms) {
+namespace os
+{
+    void timer(unsigned long long ms)
+    {
         Sleep(ms);
-    }
+    }int
 
-    Vector2ui gettermsize() {
+    ullVector2 gettermsize()
+    {
         CONSOLE_SCREEN_BUFFER_INFO csbi;
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-        return Vector2ui{ (unsigned) csbi.srWindow.Bottom - csbi.srWindow.Top + 1,
+        return ullVector2{(unsigned) csbi.srWindow.Bottom - csbi.srWindow.Top + 1,
                           (unsigned) csbi.srWindow.Right - csbi.srWindow.Left + 1};
     }
 }

@@ -24,30 +24,37 @@
 
 using namespace terminal;
 
-void terminal::clear() {
+void terminal::clear()
+{
     std::cout << "\033[2J\033[1;1H" << std::flush;
 }
 
-void terminal::set_cursor_pos(int x, int y) {
+void terminal::set_cursor_pos(int x, int y)
+{
     std::cout << "\033[" << y << ";" << x << "H";
 }
 
-void terminal::set_cursor_visibility(bool visible) {
+void terminal::set_cursor_visibility(bool visible)
+{
     if (visible)
         std::cout << "\033[?25h" << std::flush;
     else
         std::cout << "\033[?25l" << std::flush;
 }
 
-void terminal::clear_line() {
+void terminal::clear_line()
+{
     std::cout << "\033[2K" << std::flush;
 }
 
-char terminal::get_char() {
+char terminal::get_char()
+{
     return getch();
 }
 
-terminal::window::window(Vector2ui winsize, Vector2ui winpos) : winsize(winsize), winpos(winpos) {
+terminal::window::window(ullVector2 winsize, ullVector2 winpos)
+                          : winsize(winsize),    winpos(winpos)
+{
     clear();
     //Check to see if the window is too big for the terminal
     if (winsize.y > termsize.y || winsize.x > termsize.x) {
@@ -68,7 +75,8 @@ terminal::window::window(Vector2ui winsize, Vector2ui winpos) : winsize(winsize)
     render();
 }
 
-void terminal::window::render() {
+void terminal::window::render()
+{
     std::ios_base::sync_with_stdio(false);
     win_clear();
     cursor = {0, 0};
@@ -114,7 +122,8 @@ void terminal::window::render() {
     std::ios_base::sync_with_stdio(true);
 }
 
-void terminal::window::win_clear() {
+void terminal::window::win_clear()
+{
     std::ios_base::sync_with_stdio(false);
     for (unsigned int i = 0; i < winsize.y; i++) {
         set_cursor_pos(winpos.x, winpos.y + i);
@@ -126,7 +135,8 @@ void terminal::window::win_clear() {
     std::ios_base::sync_with_stdio(true);
 }
 
-void terminal::window::set_wcursor_pos(int xin, int yin) {
+void terminal::window::set_wcursor_pos(int xin, int yin)
+{
     cursor.x = xin;
     cursor.y = yin;
 

@@ -16,14 +16,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef OS_H
-#define OS_H 1
+#pragma once
 
 #include "common.hh"
 
-namespace os {
+namespace os
+{
     void timer(unsigned long long ms);
-    Vector2ui gettermsize();
+    ullVector2 gettermsize();
 }
-
-#endif
