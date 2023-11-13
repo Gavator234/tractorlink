@@ -25,11 +25,6 @@ project(tractorlink
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CURSES_NEED_NCURSES TRUE)
-set(CURSES_NEED_WIDE TRUE)
-find_package(Curses REQUIRED)
-include_directories(${CURSES_INCLUDE_DIR})
-
 if (WIN32)
   add_compile_definitions(WINCOMPAT)
 elseif (UNIX)
@@ -41,7 +36,6 @@ add_subdirectory(src)
 
 # terminal.cc settings
 target_link_libraries(terminal os)
-target_link_libraries(terminal ${CURSES_LIBRARIES})
 
 # tractorlink settings
 add_compile_definitions(PROJECT_VERSION=${tractorlink_VERSION_MAJOR}.${tractorlink_VERSION_MINOR})
