@@ -24,4 +24,5 @@ namespace os
 {
     void timer(unsigned long long ms);
     ullVector2 gettermsize();
+    char get_char();
 }

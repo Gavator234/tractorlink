@@ -17,7 +17,6 @@
 */
 
 #include <iostream>
-#include <ncurses.h>
 
 #include "terminal.hh"
 #include "os.hh"
@@ -49,7 +48,7 @@ void terminal::clear_line()
 
 char terminal::get_char()
 {
-    return getch();
+    return os::get_char();
 }
 
 terminal::window::window(ullVector2 winsize, ullVector2 winpos)
@@ -85,7 +84,7 @@ void terminal::window::render()
     for (unsigned int i = 0; i < winsize.y; i++) {
         set_cursor_pos(winpos.x - 1, winpos.y + i);
         std::cout << "|";
-        set_cursor_pos(winpos.x + winsize.x, winpos.y + i);
+        set_cursor_pos(winpos.x + winsize.x + 1, winpos.y + i);
         std::cout << "|";
     }
 
@@ -114,13 +113,14 @@ void terminal::window::render()
         cursor.x++;
     }
 
+    //make sure the cursor is in the right place
+    set_wcursor_pos();
     std::cout << std::flush;
     std::ios_base::sync_with_stdio(true);
 }
 
 void terminal::window::win_clear()
 {
-    std::ios_base::sync_with_stdio(false);
     for (unsigned int i = 0; i < winsize.y; i++) {
         set_cursor_pos(winpos.x, winpos.y + i);
         for (unsigned int i = 0; i < winsize.x; i++) {
@@ -128,7 +128,6 @@ void terminal::window::win_clear()
         }
     }
     std::cout << std::flush;
-    std::ios_base::sync_with_stdio(true);
 }
 
 void terminal::window::set_wcursor_pos(int xin, int yin)

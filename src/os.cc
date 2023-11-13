@@ -24,9 +24,25 @@
 #ifdef UNIXCOMPAT
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <stdio.h>
+#include <termios.h>
 
 namespace os
 {
+    //oldt and newt aren't functions, they are variables that are initialized once and
+    //then never changed. They just need to be preprocessed since getchar() will be ran a lot.
+    const struct termios oldt = [] -> termios {
+        struct termios oldt;
+        tcgetattr(STDIN_FILENO, &oldt);
+        return oldt;
+    }();
+
+    const struct termios newt = [] -> termios {
+        struct termios newt = oldt;
+        newt.c_lflag &= ~(ICANON);
+        return newt;
+    }();
+
     void timer(unsigned long long ms)
     {
         usleep(ms * 1000);
@@ -35,8 +51,19 @@ namespace os
     ullVector2 gettermsize()
     {
         struct winsize w;
-        ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+        ioctl( STDOUT_FILENO, TIOCGWINSZ, &w);
         return ullVector2{w.ws_row, w.ws_col};
+    }
+
+    char get_char()
+    {
+        tcsetattr( STDOUT_FILENO, TCSANOW, &newt);
+
+        char input = '\0';
+        input = getchar();
+
+        tcsetattr( STDOUT_FILENO, TCSANOW, &oldt);
+        return input;
     }
 }
 #endif
@@ -57,6 +84,12 @@ namespace os
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
         return ullVector2{(unsigned) csbi.srWindow.Bottom - csbi.srWindow.Top + 1,
                           (unsigned) csbi.srWindow.Right - csbi.srWindow.Left + 1};
+    }
+
+    char get_char()
+    {
+        //Todo: This.
+        throw std::excetpion;
     }
 }
 #endif
